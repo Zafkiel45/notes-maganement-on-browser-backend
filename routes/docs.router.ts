@@ -5,6 +5,6 @@ const getDocsRoute = express.Router();
 
 getDocsRoute.use(implementCors);
 
-getDocsRoute.get('/:doc', () => {
+getDocsRoute.get('/:id', () => {
 
 });

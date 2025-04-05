@@ -5,6 +5,6 @@ database.run(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         content BLOB NOT NULL,
-        type TEXT NOT NULL, 
+        type TEXT NOT NULL
     )    
 `);

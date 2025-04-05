@@ -177,3 +177,6 @@ dist
 # databases:
 *.sqlite 
 *.db
+
+# local files test
+localDocs.ts
