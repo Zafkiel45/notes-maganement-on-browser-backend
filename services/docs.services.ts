@@ -1,10 +1,17 @@
+import path from "node:path";
 import { database } from "../database/config/config";
+import { getDirname } from "../utils/getDirname";
+import { readdir } from "node:fs/promises";
+
+const basePath = path.join("D:", "mdx-files");
 
 interface FileSignature {
   content: Uint8Array[];
 }
 
-type foldersSignature = string[];
+const files = await readdir(basePath, {
+  recursive: true,
+});
 
 export function getFileContent(id: string): Uint8Array[] | string {
   const query = database.prepare(`SELECT content FROM docs WHERE id = @id`);
@@ -19,13 +26,5 @@ export function getFileContent(id: string): Uint8Array[] | string {
 }
 
 export function getFolders() {
-  const query = database.prepare("SELECT type FROM docs");
-  const folders = query.all() as foldersSignature;
-  const foldersTypes: string[] = [];
-
-  for (let property in folders) {
-    foldersTypes.push(folders[property]);
-  };
-
-  return JSON.stringify(foldersTypes);
+  return JSON.stringify(getDirname(files));
 }
