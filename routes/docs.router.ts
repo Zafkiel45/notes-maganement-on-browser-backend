@@ -1,10 +1,6 @@
 import express from 'express';
-import { implementCors } from '../middleware/docs.middlewere';
+import { docsController } from '../controllers/controllers.docs';
 
-const getDocsRoute = express.Router();
+export const docsRoute = express.Router();
 
-getDocsRoute.use(implementCors);
-
-getDocsRoute.get('/:id', () => {
-
-});
+docsRoute.get('/:id', docsController);
