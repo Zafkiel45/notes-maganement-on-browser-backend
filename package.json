@@ -2,6 +2,11 @@
   "name": "webview-mdx-docs-backend",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "files": "bun --watch run addFiles.ts",
+    "server": "bun --watch run index.ts",
+    "start": "bun run addFiles.ts && bun --watch  run index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
