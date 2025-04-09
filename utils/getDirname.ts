@@ -11,7 +11,7 @@ export function getDirname(pathArr: string[]): string[] {
 
     paths.push(convertPathToDirname(file));
   };
-  console.log(paths)
+  
   return paths
 }
 

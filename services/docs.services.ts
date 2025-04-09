@@ -28,3 +28,10 @@ export function getFileContent(id: string): Uint8Array[] | string {
 export function getFolders() {
   return JSON.stringify(getDirname(files));
 }
+
+export function getFilesByType(type: string) {
+  const query = database.query('SELECT name,id FROM docs WHERE type = @type');
+  const typeNotesArr = query.all({type: type});
+  
+  return JSON.stringify(typeNotesArr);
+};
