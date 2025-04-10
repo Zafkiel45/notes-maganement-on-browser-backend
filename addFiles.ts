@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { readdir } from "node:fs/promises";
 import { database } from "./database/config/config";
 import path from "node:path";
@@ -7,7 +8,7 @@ interface fileNameType {
   name: string;
 }
 
-const basePath = path.join("D:", "mdx-files");
+const basePath = path.join(process.env.UNITY_PATH as string, process.env.PATH_MDX as string);
 
 const files = await readdir(basePath, {
   recursive: true,

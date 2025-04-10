@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import path from "node:path";
 import { database } from "../database/config/config";
 import { getDirname } from "../utils/getDirname";
 import { readdir } from "node:fs/promises";
 
-const basePath = path.join("D:", "mdx-files");
+const basePath = path.join(process.env.UNITY_PATH as string, process.env.PATH_MDX as string);
 
 interface FileSignature {
   content: Uint8Array[];
