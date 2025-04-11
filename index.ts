@@ -1,4 +1,6 @@
 import express from "express";
+import './database/migrations/migrations';
+import './addFiles';
 import { docsRoute, foldersRoute, typesRoute } from "./routes/docs.router";
 
 const route = express();

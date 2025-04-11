@@ -6,12 +6,12 @@ export function getDirname(pathArr: string[]): string[] {
   const paths: string[] = [];
 
   for (let file of pathArr) {
-    if (!file.endsWith(".mdx")) continue;
+    if (!file.endsWith(".md")) continue;
     if (paths.includes(convertPathToDirname(file))) continue;
 
     paths.push(convertPathToDirname(file));
   };
-  
+
   return paths
 }
 
