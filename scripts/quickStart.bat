@@ -10,4 +10,4 @@ timeout /t 2 > nul
 REM Start the frontend aftet 2 secons in a new window. Change the 'path' for the backend project directory
 start "Frontend" cmd /k "cd 'path' && npm run start"
 
-echo Ambos os servidores foram iniciados ✅.
+echo Both servers have been started ✅..
