@@ -49,7 +49,6 @@ const newFiles: string[] = localFiles.filter((item) => {
 });
 
 const transaction = database.transaction(async (files) => {
-  let idx = 0;
   for (let file of files) {
     const currentFile = Bun.file(path.join(basePath, file));
     const arrayBuffer = await currentFile.arrayBuffer();
@@ -61,7 +60,6 @@ const transaction = database.transaction(async (files) => {
       type: path.basename(path.dirname(path.join(basePath, file))),
     });
 
-    idx++;
     console.log(path.parse(file).name + ' adicionado com sucesso ✅');
   }
 });
