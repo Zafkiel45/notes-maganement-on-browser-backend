@@ -1,16 +1,17 @@
+param (
+    [string]$mode = ""
+)
+
 Write-Host "Iniciando Backend e Frontend..."
 
-# Paths (Change the paths to a correct directory)
-$backendPath = "path\para\backend"
-$frontendPath = "path\para\frontend"
+Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs-backend'; bun run start"
 
-# Start the backend in a new window 
-Start-Process -WindowStyle Normal -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "cd '$backendPath'; bun run start"
-
-# Waits 2 seconds
 Start-Sleep -Seconds 2
 
-# Start the frontend in a new window 
-Start-Process -WindowStyle Normal -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "cd '$frontendPath'; npm run start"
-
-Write-Host "Both servers have been started ✅."
+if ($mode -eq "dev") {
+    Write-Host "Modo desenvolvimento ativado para o Frontend"
+    Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs'; npm run dev"
+} else {
+    Write-Host "Modo preview ativado para o Frontend"
+    Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs'; npm run preview"
+}
