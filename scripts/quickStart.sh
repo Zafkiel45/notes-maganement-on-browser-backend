@@ -1,18 +1,20 @@
 #!/bin/bash
 
-echo "Starting Backend and Frontend..."
+MODE=$1
 
-# Paths (Change the paths to a correct directory)
-BACKEND_PATH="/caminho/para/backend"
-FRONTEND_PATH="/caminho/para/frontend"
+echo "Iniciando Backend e Frontend..."
 
-# Start the backend in a new window 
-gnome-terminal -- bash -c "cd '$BACKEND_PATH'; bun run start; exec bash"
+# Inicia backend
+gnome-terminal -- bash -c "cd ~/projetos/backend && bun run start; exec bash"
 
-# Waits 2 seconds
+# Aguarda 2 segundos
 sleep 2
 
-# Start the frontend in a new window 
-gnome-terminal -- bash -c "cd '$FRONTEND_PATH'; npm run start; exec bash"
-
-echo "Both servers have been started ✅."
+# Inicia frontend com base na flag
+if [ "$MODE" == "dev" ]; then
+  echo "Modo desenvolvimento ativado para o Frontend"
+  gnome-terminal -- bash -c "cd ~/projetos/frontend && npm run dev; exec bash"
+else
+  echo "Modo preview ativado para o Frontend"
+  gnome-terminal -- bash -c "cd ~/projetos/frontend && npm run preview; exec bash"
+fi
