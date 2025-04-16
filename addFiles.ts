@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { readdir } from "node:fs/promises";
 import { database } from "./database/config/config";
 import path from "node:path";
-import { getDirname } from "./utils/getDirname";
 
 interface fileNameType {
   name: string;
@@ -49,19 +48,23 @@ const newFiles: string[] = localFiles.filter((item) => {
 });
 
 const transaction = database.transaction(async (files) => {
-  for (let file of files) {
-    const currentFile = Bun.file(path.join(basePath, file));
-    const arrayBuffer = await currentFile.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-
-    query.run({
-      name: path.parse(file).name,
-      content: buffer,
-      type: path.basename(path.dirname(path.join(basePath, file))),
-    });
-
-    console.log(path.parse(file).name + ' adicionado com sucesso ✅');
-  }
+  try {
+    for (let file of files) {
+      const currentFile = Bun.file(path.join(basePath, file));
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+      console.log('Processand o arquivo: ', file, ' ⏳');
+      query.run({
+        name: path.parse(file).name,
+        content: buffer,
+        type: path.basename(path.dirname(path.join(basePath, file))),
+      });
+  
+      console.log(path.parse(file).name + ' adicionado com sucesso ✅');
+    }
+  } catch(err) {
+    console.error(err);
+  };
 });
 
 await transaction(newFiles);
