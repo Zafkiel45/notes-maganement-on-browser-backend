@@ -1,6 +1,10 @@
 import type { Response, Request } from "express";
-import { getFoldersByName } from "../services/folder.services";
-import { createFolderService } from "../services/folder.services";
+import { 
+    getFoldersByName, 
+    createFolderService,
+    getFoldersService,
+} from "../services/folder.services";
+
 
 export function createFolder(req: Request, res: Response) {
     const { folderName } = req.body;
@@ -13,10 +17,15 @@ export function createFolder(req: Request, res: Response) {
     const folder = getFoldersByName(folderName);
    
     if(folder) {
-        return res.sendStatus(409); // conflict
+        res.sendStatus(409); // conflict
+        return;
     } else {
         createFolderService(folderName);
         res.sendStatus(201); // created
         return;
     };
+};
+export function getFoldersController(req: Request, res: Response) {
+    const folders = getFoldersService();
+    res.send(folders); // ok 
 };

@@ -23,3 +23,15 @@ export function getFoldersByName(folderName: string): FolderSignature | null {
     }) as FolderSignature | null;
     return folder; 
 };
+export function getFoldersService() {
+    const query = database.query('SELECT name FROM folders');
+    const foldersObject: FolderSignature[] = query.all() as FolderSignature[];
+    console.log('structure of folders: ', foldersObject);
+    const foldersArr = [];
+
+    for(let folder of foldersObject) {
+        foldersArr.push(folder.name);
+    };
+
+    return foldersArr;
+};
