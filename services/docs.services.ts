@@ -1,18 +1,9 @@
-import 'dotenv/config';
-import path from "node:path";
+import "dotenv/config";
 import { database } from "../database/config/config";
-import { getDirname } from "../utils/getDirname";
-import { readdir } from "node:fs/promises";
-
-const basePath = path.join(process.env.UNITY_PATH as string, process.env.PATH_MDX as string);
 
 interface FileSignature {
   content: Uint8Array[];
 }
-
-const files = await readdir(basePath, {
-  recursive: true,
-});
 
 export function getFileContent(id: string): Uint8Array[] | string {
   const query = database.prepare(`SELECT content FROM docs WHERE id = @id`);
@@ -26,13 +17,9 @@ export function getFileContent(id: string): Uint8Array[] | string {
   return fileContent.content;
 }
 
-export function getFolders() {
-  return JSON.stringify(getDirname(files));
-}
-
 export function getFilesByType(type: string) {
-  const query = database.query('SELECT name,id FROM docs WHERE type = @type');
-  const typeNotesArr = query.all({type: type});
-  
+  const query = database.query("SELECT name,id FROM docs WHERE type = @type");
+  const typeNotesArr = query.all({ type: type });
+
   return JSON.stringify(typeNotesArr);
-};
+}
