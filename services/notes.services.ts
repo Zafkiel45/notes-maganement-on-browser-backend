@@ -1,28 +1,16 @@
 import { database } from "../database/config/config";
-import type { NoteContent, NoteSummary } from "../types/Note";
+import type { NoteContent } from "../types/Note";
 import type { NoteRecord } from "../database/models/NoteRecord";
-
-export type MarkdownNote = {
-  name: string;
-  content: string;
-  folder: number;
-};
-// the markdown on database
-type MarkdownContent = {
-  content: Uint8Array[];
-};
 
 export function addNewNotes({ content, name, folder }: NoteRecord) {
   const query = database.prepare(`
-        INSERT INTO notes (name, content, folder) VALUES (@name, @content, @folder)`);
+        INSERT INTO notes (name, content, folder) VALUES (@name, @content, @folder)
+    `);
 
   const transaction = database.transaction(() => {
-    query.run({
-      name: name,
-      content: content,
-      folder: folder,
-    });
+    query.run({name: name,content: content,folder: folder});
   });
+  
   transaction();
 }
 export function getNotesByFolder(folderId: number) {
@@ -32,14 +20,10 @@ export function getNotesByFolder(folderId: number) {
   const notesArr = query.all({ folder: folderId });
   return JSON.stringify(notesArr);
 }
-export function getNote(id: string): Uint8Array[] | string {
+export function getNote(id: string): string {
   const query = database.prepare(`SELECT content FROM notes WHERE id = @id`);
+  const note: NoteContent = query.get({ id: parseInt(id) }) as NoteContent;
 
-  const fileContent: MarkdownContent = query.get({
-    id: parseInt(id),
-  }) as MarkdownContent;
-
-  if (!fileContent) return "# The file does not exist";
-
-  return fileContent.content;
+  if (!note) return "# The file does not exist";
+  return note.content;
 }
