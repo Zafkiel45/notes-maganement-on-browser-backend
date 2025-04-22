@@ -1,7 +1,7 @@
 import type { Response, Request } from "express";
 import { 
     addNewNotes, 
-    getFilesByFolder,
+    getNotesByFolder,
     getNote
 } from "../services/notes.services";
 
@@ -20,20 +20,22 @@ export function addNoteController(req: Request, res: Response) {
     });
 };
 
-export function folderIdController(req: Request, res: Response) {
+export function getfolderByIdController(req: Request, res: Response) {
     try {
         const { folder } = req.params;
         const folderId = parseInt(folder);
-        
-        if (!folder) {
-          res.sendStatus(400);
-          return;
+
+        if (!folderId || folderId <= 0 || typeof folderId !== 'number') {
+            res.sendStatus(422); 
+            return;
         };
-      
-        res.send(getFilesByFolder(folderId));
+
+        res.send(getNotesByFolder(folderId));
+        return; 
     } catch (err) {
         console.error(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
+        return;
     }; 
 };
 
@@ -41,12 +43,14 @@ export function getNoteController(req: Request, res: Response): void {
     try {
         const { id } = req.params;
 
-        if (!id) {res.sendStatus(400); return;};
+        if (!id || typeof id !== 'string') {res.sendStatus(422); return;};
 
         const content = getNote(id);
-      
         res.send(content);
+        return;
     } catch (err) {
         console.error(err);
+        res.sendStatus(500);
+        return;
     };
 };
