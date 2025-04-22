@@ -3,7 +3,7 @@ import type { NoteRecord } from "../database/models/NoteRecord";
 import {addNewNotes,getNotesByFolder,getNote} from "../services/notes.services";
 import { isNoteRecord } from "../validation/isNoteRecord";
 
-export function addNoteController(req: Request, res: Response) {
+export function createNoteController(req: Request, res: Response) {
     const { name, content, folder } = req.body;
     if(isNoteRecord(name, content, folder)) {res.sendStatus(422); return;};
     const record: NoteRecord = {name: name,content: content,folder: folder}
