@@ -2,6 +2,7 @@ import { database } from "../database/config/config";
 
 interface FolderSignature {
     name: string;
+    folder_id: number;
 };
 
 export function createFolderService(folderName: string) {
@@ -24,14 +25,9 @@ export function getFoldersByName(folderName: string): FolderSignature | null {
     return folder; 
 };
 export function getFoldersService() {
-    const query = database.query('SELECT name FROM folders');
+    const query = database.query('SELECT name, folder_id FROM folders');
     const foldersObject: FolderSignature[] = query.all() as FolderSignature[];
     console.log('structure of folders: ', foldersObject);
-    const foldersArr = [];
 
-    for(let folder of foldersObject) {
-        foldersArr.push(folder.name);
-    };
-
-    return foldersArr;
+    return foldersObject;
 };

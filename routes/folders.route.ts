@@ -1,8 +1,12 @@
-import express from 'express';
-import { implementCors } from '../middleware/docs.middlewere';
-import { createFolder } from '../controllers/folders.controller';
+import express from "express";
+import { implementCors } from "../middleware/docs.middlewere";
+import {
+  createFolder,
+  getFoldersController,
+} from "../controllers/folders.controller";
 
-export const folderAdd = express.Router();
+export const folder = express.Router();
 
-folderAdd.use(implementCors);
-folderAdd.post('/', createFolder);
+folder.use(implementCors);
+folder.post("/", createFolder);
+folder.get("/", getFoldersController);
