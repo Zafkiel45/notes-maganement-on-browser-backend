@@ -14,7 +14,7 @@ database.run(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL UNIQUE,
         content BLOB NOT NULL,
-        folder INTEGER NOT NULL UNIQUE,
+        folder INTEGER NOT NULL,
         FOREIGN KEY (folder) REFERENCES folders(folder_id) ON DELETE CASCADE
     )    
 `);
