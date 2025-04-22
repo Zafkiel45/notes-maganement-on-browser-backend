@@ -13,7 +13,7 @@ database.run(`
     CREATE TABLE IF NOT EXISTS notes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL UNIQUE,
-        content BLOB NOT NULL,
+        content TEXT NOT NULL,
         folder INTEGER NOT NULL,
         FOREIGN KEY (folder) REFERENCES folders(folder_id) ON DELETE CASCADE
     )    

@@ -1,6 +1,8 @@
+// there is not need for specify the id when invoking the function of createNote. 
+// The id property is present with propose of representation to notes on database
 export interface NoteRecord {
-    id: number;
+    id?: number; 
     name: string;
-    content: Uint8Array;
+    content: string;
     folder: number; 
 };

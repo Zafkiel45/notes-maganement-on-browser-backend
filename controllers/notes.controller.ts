@@ -1,23 +1,13 @@
 import type { Response, Request } from "express";
-import { 
-    addNewNotes, 
-    getNotesByFolder,
-    getNote
-} from "../services/notes.services";
+import type { NoteRecord } from "../database/models/NoteRecord";
+import {addNewNotes,getNotesByFolder,getNote} from "../services/notes.services";
+import { isNoteRecord } from "../validation/isNoteRecord";
 
 export function addNoteController(req: Request, res: Response) {
-    const { name, content, folder} = req.body;
-
-    if(!name || !content) {
-        res.sendStatus(400);
-        return;
-    };
-
-    addNewNotes({
-        name: name,
-        content: content,
-        folder: folder,
-    });
+    const { name, content, folder } = req.body;
+    if(isNoteRecord(name, content, folder)) {res.sendStatus(422); return;};
+    const record: NoteRecord = {name: name,content: content,folder: folder}
+    addNewNotes(record);
 };
 
 export function getfolderByIdController(req: Request, res: Response) {
