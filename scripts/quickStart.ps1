@@ -2,16 +2,16 @@ param (
     [string]$mode = ""
 )
 
-Write-Host "Iniciando Backend e Frontend..."
-
-Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs-backend'; bun run start"
-
-Start-Sleep -Seconds 2
+Write-Host "Starting the Backend and Front-end.."
 
 if ($mode -eq "dev") {
-    Write-Host "Modo desenvolvimento ativado para o Frontend"
-    Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs'; npm run dev"
+    Write-Host "Mode development activated"
+    Start-Process powershell -ArgumentList "bun run start dev"
+    Start-Sleep -Seconds 2
+    Start-Process powershell -ArgumentList "npm run dev"
 } else {
-    Write-Host "Modo preview ativado para o Frontend"
-    Start-Process powershell -ArgumentList "cd 'D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs'; npm run preview"
+    Start-Process powershell -ArgumentList "bun run start"
+    Start-Sleep -Seconds 2
+    Write-Host "Mode in production activated"
+    Start-Process powershell -ArgumentList "npm run preview"
 }

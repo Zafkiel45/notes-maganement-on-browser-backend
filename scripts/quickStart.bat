@@ -1,24 +1,27 @@
 @echo off
 setlocal
 
-:: Checa se o primeiro parâmetro é "dev"
+:: Store the first argument. This must be 'dev' to development environment.
 set "MODE=%1"
 
-echo Iniciando Backend e Frontend...
+echo Backend and Front-end Starting...
 
-REM Inicia o backend em nova janela
-start "Backend" cmd /k "D: && cd D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs-backend && bun run start"
+REM start the server based on arguments
+REM change the paths correctly
 
-REM Aguarda 2 segundos para garantir que o backend subiu
-timeout /t 2 > nul
-
-REM Inicia o frontend baseado na flag
 if /I "%MODE%"=="dev" (
-    echo Modo desenvolvimento ativado para o Frontend
-    start "Frontend" cmd /k "D: && cd D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs && npm run dev"
+    start "Backend" cmd /k "bun run start dev"
+    REM make sure the backend start before of client.
+    timeout /t 2 > nul
+    echo Development mode activate to the the Front-end and Backend.
+    echo Backend will be a development database for security reasons
+    start "Frontend" cmd /k "npm run dev"
 ) else (
+    start "Backend" cmd /k "bun run start"
+    REM make sure the backend start before of client.
+    timeout /t 2 > nul
     echo Modo preview ativado para o Frontend
-    start "Frontend" cmd /k "D: && cd D:\murilo-projects\local-projetos\full-stack\webview-mdx-docs && npm run preview"
+    start "Frontend" cmd /k "npm run preview"
 )
 
 echo Ambos os servidores foram iniciados.

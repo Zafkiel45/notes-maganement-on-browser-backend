@@ -4,17 +4,17 @@ MODE=$1
 
 echo "Iniciando Backend e Frontend..."
 
-# Inicia backend
-gnome-terminal -- bash -c "cd ~/projetos/backend && bun run start; exec bash"
-
-# Aguarda 2 segundos
-sleep 2
-
-# Inicia frontend com base na flag
+# start the application in development or producton mode
 if [ "$MODE" == "dev" ]; then
-  echo "Modo desenvolvimento ativado para o Frontend"
-  gnome-terminal -- bash -c "cd ~/projetos/frontend && npm run dev; exec bash"
+  # start backend
+  gnome-terminal -- bash -c "bun run start dev; exec bash"
+  # await 2 seconds
+  sleep 2
+  gnome-terminal -- bash -c "npm run dev; exec bash"
+  echo "Development mode activated"
 else
-  echo "Modo preview ativado para o Frontend"
-  gnome-terminal -- bash -c "cd ~/projetos/frontend && npm run preview; exec bash"
+  gnome-terminal -- bash -c "bun run start; exec bash"
+  sleep 2
+  gnome-terminal -- bash -c "npm run preview; exec bash"
+  echo "Production mode activated"
 fi
