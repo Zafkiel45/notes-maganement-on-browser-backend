@@ -49,3 +49,21 @@ export async function updateNoteService({ id, content }: NoteContent) {
     };
   });
 };
+export async function deleteNoteService(id: string) {
+  await new Promise<void>((resolve, reject) => {
+    try {
+      const deleteQuery = database.prepare(`DELETE FROM notes WHERE id = @id`);
+      const transaction = database.transaction(() => {
+        deleteQuery.run({
+          id: id, 
+        });
+      });
+  
+      transaction();
+      resolve();
+    } catch(err) {
+      console.error(err);
+      reject();
+    };
+  });
+};

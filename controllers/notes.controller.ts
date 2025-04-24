@@ -6,6 +6,7 @@ import {
     getNotesByFolder,
     getNote,
     updateNoteService,
+    deleteNoteService,
 } from "../services/notes.services";
 
 export function createNoteController(req: Request, res: Response) {
@@ -60,4 +61,20 @@ export async function updateNoteController(req: Request, res: Response): Promise
   };
 
   await updateNoteService({id, content});
+};
+
+export async function deleteNoteController(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+
+    if(!id || typeof id !== 'string') {
+      res.sendStatus(202);
+      return;
+    };
+    
+    await deleteNoteService(id);
+    res.sendStatus(202);
+  } catch(err) {
+    console.error(err);
+  };
 };
