@@ -3,8 +3,13 @@ export interface NoteSummary {
     name: string;
 };
 
-export interface NoteContent {
+export interface Note {
     id: number;
     name: string;
     content: string; 
+};
+
+export interface NoteContent {
+    id: Number;
+    content: string;
 };

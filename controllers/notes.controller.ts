@@ -1,7 +1,12 @@
 import type { Response, Request } from "express";
 import type { NoteRecord } from "../database/models/NoteRecord";
-import {addNewNotes,getNotesByFolder,getNote} from "../services/notes.services";
 import { isNoteRecord } from "../validation/isNoteRecord";
+import { 
+    addNewNotes,
+    getNotesByFolder,
+    getNote,
+    updateNoteService,
+} from "../services/notes.services";
 
 export function createNoteController(req: Request, res: Response) {
     const { name, content, folder } = req.body;
@@ -43,4 +48,16 @@ export function getNoteController(req: Request, res: Response): void {
         res.sendStatus(500);
         return;
     };
+};
+
+export async function updateNoteController(req: Request, res: Response): Promise<void> {
+  const { id, content } = req.body;
+  const isValidate = typeof id !== 'undefined' && typeof content !== 'undefined';
+
+  if(!isValidate) {
+    res.sendStatus(422);
+    return;
+  };
+
+  await updateNoteService({id, content});
 };

@@ -1,5 +1,5 @@
 import { database } from "../database/config/config";
-import type { NoteContent } from "../types/Note";
+import type { Note, NoteContent} from "../types/Note";
 import type { NoteRecord } from "../database/models/NoteRecord";
 
 export function addNewNotes({ content, name, folder }: NoteRecord) {
@@ -22,8 +22,30 @@ export function getNotesByFolder(folderId: number) {
 }
 export function getNote(id: string): string {
   const query = database.prepare(`SELECT content FROM notes WHERE id = @id`);
-  const note: NoteContent = query.get({ id: parseInt(id) }) as NoteContent;
+  const note: Note = query.get({ id: parseInt(id) }) as Note;
 
   if (!note) return "# The file does not exist";
   return note.content;
-}
+};
+export async function updateNoteService({ id, content }: NoteContent) {
+  await new Promise<void>((resolve, reject) => {
+    try {
+      const update = database.prepare(`
+        UPDATE notes SET content = @editedNote WHERE id = @noteId
+      `);
+
+      const transaction = database.transaction(() => {
+        update.run({
+          editedNote: content,
+          noteId: String(id)
+        });
+      });
+    
+      transaction();
+      resolve();
+    } catch (err) {
+      console.error(err);
+      reject();
+    };
+  });
+};
