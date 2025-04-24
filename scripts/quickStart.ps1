@@ -2,16 +2,41 @@ param (
     [string]$mode = ""
 )
 
-Write-Host "Starting the Backend and Front-end.."
+Write-Host "Starting the Backend and Front-end..."
+
+# Sempre manda pra janela de índice 0 (aquela em que você rodou o script)
+$wtWindowIndex = 0
+
+function Open-Tab {
+    param (
+        [string]$path,
+        [string]$command
+    )
+
+    wt -w $wtWindowIndex new-tab `
+       -d $path `
+       pwsh -NoExit -Command $command
+}
 
 if ($mode -eq "dev") {
     Write-Host "Mode development activated"
-    Start-Process powershell -ArgumentList "bun run start dev"
-    Start-Sleep -Seconds 2
-    Start-Process powershell -ArgumentList "npm run dev"
-} else {
-    Start-Process powershell -ArgumentList "bun run start"
-    Start-Sleep -Seconds 2
-    Write-Host "Mode in production activated"
-    Start-Process powershell -ArgumentList "npm run preview"
+
+    Open-Tab `
+      -path "specify your path" `
+      -command "bun run start dev"
+
+    Open-Tab `
+      -path "specify your path" `
+      -command "npm run dev"
+}
+else {
+    Write-Host "Mode production activated"
+
+    Open-Tab `
+      -path "specify your path" `
+      -command "bun run start"
+
+    Open-Tab `
+      -path "specify your path" `
+      -command "npm run preview"
 }
