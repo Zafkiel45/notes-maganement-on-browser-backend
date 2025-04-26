@@ -1,5 +1,5 @@
 import { database } from "../database/config/config";
-import type { Note, NoteContent} from "../types/Note";
+import type { Note, NoteContent } from "../types/Note";
 import type { NoteRecord } from "../database/models/NoteRecord";
 
 export function addNewNotes({ content, name, folder }: NoteRecord) {
@@ -8,9 +8,9 @@ export function addNewNotes({ content, name, folder }: NoteRecord) {
     `);
 
   const transaction = database.transaction(() => {
-    query.run({name: name,content: content,folder: folder});
+    query.run({ name: name, content: content, folder: folder });
   });
-  
+
   transaction();
 }
 export function getNotesByFolder(folderId: number) {
@@ -26,9 +26,8 @@ export function getNote(id: string): string {
 
   if (!note) return "# The file does not exist";
   return note.content;
-};
+}
 export async function updateNoteService({ id, content }: NoteContent) {
-  await new Promise<void>((resolve, reject) => {
     try {
       const update = database.prepare(`
         UPDATE notes SET content = @editedNote WHERE id = @noteId
@@ -37,33 +36,27 @@ export async function updateNoteService({ id, content }: NoteContent) {
       const transaction = database.transaction(() => {
         update.run({
           editedNote: content,
-          noteId: String(id)
+          noteId: String(id),
         });
       });
-    
+
       transaction();
-      resolve();
+ 
     } catch (err) {
       console.error(err);
-      reject();
-    };
-  });
-};
+    }
+}
 export async function deleteNoteService(id: string) {
-  await new Promise<void>((resolve, reject) => {
-    try {
-      const deleteQuery = database.prepare(`DELETE FROM notes WHERE id = @id`);
-      const transaction = database.transaction(() => {
-        deleteQuery.run({
-          id: id, 
-        });
+  try {
+    const deleteQuery = database.prepare(`DELETE FROM notes WHERE id = @id`);
+    const transaction = database.transaction(() => {
+      deleteQuery.run({
+        id: id,
       });
+    });
   
-      transaction();
-      resolve();
-    } catch(err) {
-      console.error(err);
-      reject();
-    };
-  });
+    transaction();
+  } catch(err) {
+    console.error(err);
+  };
 };
