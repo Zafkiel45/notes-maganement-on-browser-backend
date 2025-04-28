@@ -14,6 +14,7 @@ export function createNoteController(req: Request, res: Response) {
     if(isNoteRecord(name, content, folder)) {res.sendStatus(422); return;};
     const record: NoteRecord = {name: name,content: content,folder: folder}
     addNewNotes(record);
+    res.sendStatus(202);
 };
 
 export function getfolderByIdController(req: Request, res: Response) {
