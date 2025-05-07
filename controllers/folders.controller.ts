@@ -9,7 +9,7 @@ import {
 export function createFolder(req: Request, res: Response) {
     const { folderName } = req.body;
 
-    if(!String(folderName).trim() || typeof folderName === 'undefined') {
+    if(!String(folderName).trim() || typeof folderName !== 'string') {
         res.sendStatus(400) // bad request;
         return;
     };
